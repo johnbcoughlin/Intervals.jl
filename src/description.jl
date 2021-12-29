@@ -8,15 +8,6 @@ function description(interval::AnchoredInterval{P,T,L,R}, s::String) where {P,T,
     )
 end
 
-function description(interval::AnchoredInterval{P, ZonedDateTime, L, R}, s::String) where {P,L,R}
-    return string(
-        L === Closed ? '[' : '(',
-        description(anchor(interval), abs(P), s),
-        anchor(interval).zone.offset,
-        R === Closed ? ']' : ')',
-    )
-end
-
 function description(dt::Date, p::Period, suffix::String)
     ds = @sprintf("%04d-%02d-%02d", year(dt), month(dt), day(dt))
     return "$(prefix(p))$suffix $ds"

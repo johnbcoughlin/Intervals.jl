@@ -136,10 +136,6 @@ end
 Interval{T}() where T = Interval{T, Open, Open}(zero(T), zero(T))
 Interval{T}() where T <: TimeType = Interval{T, Open, Open}(T(0), T(0))
 
-function Interval{T}() where T <: ZonedDateTime
-    return Interval{T, Open, Open}(T(0, tz"UTC"), T(0, tz"UTC"))
-end
-
 Base.copy(x::T) where T <: Interval = T(x.first, x.last)
 
 function Base.hash(interval::AbstractInterval, h::UInt)
@@ -529,18 +525,4 @@ function _round(
     f::RoundingFunctionTypes, interval::Interval{T,L,R}, on::Val{:right}, args...
 ) where {T, L <: Bound, R <: Unbounded}
     return interval
-end
-
-
-##### TIME ZONES #####
-
-function TimeZones.astimezone(i::Interval{ZonedDateTime, L, R}, tz::TimeZone) where {L,R}
-    return Interval{ZonedDateTime, L, R}(astimezone(first(i), tz), astimezone(last(i), tz))
-end
-
-function TimeZones.timezone(i::Interval{ZonedDateTime})
-    if timezone(first(i)) != timezone(last(i))
-        throw(ArgumentError("Interval $i contains mixed timezones."))
-    end
-    return timezone(first(i))
 end

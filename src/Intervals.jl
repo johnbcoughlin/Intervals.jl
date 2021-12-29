@@ -4,7 +4,6 @@ using Dates
 using Printf
 using RecipesBase
 using Serialization: Serialization, AbstractSerializer, deserialize
-using TimeZones
 
 using Dates: AbstractDateTime, value, coarserperiod
 
@@ -66,4 +65,10 @@ export Bound,
        isdisjoint,
        superset,
        .., ≪, ≫, ⊆, ⊇, ⊈, ⊉
+
+using Requires
+function __init__()
+    @require TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53" include("timezones.jl")
+end
+
 end

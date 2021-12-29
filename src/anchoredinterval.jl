@@ -383,11 +383,3 @@ function canonicalize(target_type::Type{<:Period}, p::P) where P <: Period
 end
 
 canonicalize(target_type::Type{P}, p::P) where P <: Period = p
-
-##### TIME ZONES #####
-
-function TimeZones.astimezone(i::AnchoredInterval{P, ZonedDateTime, L, R}, tz::TimeZone) where {P,L,R}
-    return AnchoredInterval{P, ZonedDateTime, L, R}(astimezone(anchor(i), tz))
-end
-
-TimeZones.timezone(i::AnchoredInterval{P, ZonedDateTime}) where P = timezone(anchor(i))
